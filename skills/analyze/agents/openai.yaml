@@ -1,0 +1,4 @@
+interface:
+  display_name: "Analyze"
+  short_description: "Analyze market sessions"
+  default_prompt: "Use $analyze to export session metrics and summarize the market by timeframe and session."
