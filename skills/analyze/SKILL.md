@@ -156,7 +156,7 @@ Keep the tone analytical and concise.
 Compile:
 
 ```powershell
-& 'C:\Program Files\MetaTrader 5\MetaEditor64.exe' /compile:'C:\Users\user-id\AppData\Roaming\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Scripts\codex\SessionMarketExporter.mq5' /log:'C:\Users\user-id\AppData\Roaming\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Logs\session-market-exporter-compile.log'
+& 'C:\Program Files\MetaTrader 5\MetaEditor64.exe' /compile:'C:\Users\user-id\AppData\Roaming\MetaQuotes\Terminal\<terminal-id>\MQL5\Scripts\codex\SessionMarketExporter.mq5' /log:'C:\Users\user-id\AppData\Roaming\MetaQuotes\Terminal\<terminal-id>\MQL5\Logs\session-market-exporter-compile.log'
 ```
 
 Run the exporter:
@@ -164,7 +164,7 @@ Run the exporter:
 ```powershell
 Get-Process terminal64 -ErrorAction SilentlyContinue | Stop-Process -Force
 Start-Sleep -Seconds 2
-Start-Process -FilePath 'C:\Program Files\MetaTrader 5\terminal64.exe' -ArgumentList '/config:C:\Users\user-id\AppData\Roaming\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\config\session-market-exporter-eurusd-lastyear.ini' -Wait
+Start-Process -FilePath 'C:\Program Files\MetaTrader 5\terminal64.exe' -ArgumentList '/config:C:\Users\user-id\AppData\Roaming\MetaQuotes\Terminal\<terminal-id>\MQL5\config\session-market-exporter-eurusd-lastyear.ini' -Wait
 ```
 
 ## Validated paths in this workspace
