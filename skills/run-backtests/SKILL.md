@@ -12,7 +12,7 @@ Use this skill when the user wants to run a MetaTrader 5 backtest from the termi
 Run the main MetaTrader 5 installation with a tester `.ini` file:
 
 ```powershell
-Start-Process -FilePath 'C:\Program Files\MetaTrader 5\terminal64.exe' -ArgumentList '/config:C:\Users\<user>\AppData\Roaming\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\config\codex-fvgtrader-gbpusd-lastmonth-v2.ini' -Wait
+Start-Process -FilePath 'C:\Program Files\MetaTrader 5\terminal64.exe' -ArgumentList '/config:C:\Users\<user>\AppData\Roaming\MetaQuotes\Terminal\<terminal-id>\config\codex-fvgtrader-gbpusd-lastmonth-v2.ini' -Wait
 ```
 
 Use that command pattern for backtests in this workspace.

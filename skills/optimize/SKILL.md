@@ -113,7 +113,7 @@ InpTakeProfitPoints=100||100||10||120||Y
 Use this command pattern:
 
 ```powershell
-Start-Process -FilePath 'C:\Program Files\MetaTrader 5\terminal64.exe' -ArgumentList '/config:C:\Users\<user-id>\AppData\Roaming\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\config\your-optimization.ini' -Wait
+Start-Process -FilePath 'C:\Program Files\MetaTrader 5\terminal64.exe' -ArgumentList '/config:C:\Users\<user-id>\AppData\Roaming\MetaQuotes\Terminal\<terminal-id>\MQL5\config\your-optimization.ini' -Wait
 ```
 
 Before launching, close any existing MT5 process. Otherwise the tester may not run.

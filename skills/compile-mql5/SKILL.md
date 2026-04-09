@@ -14,7 +14,7 @@ Use `MetaEditor64.exe` from the local MetaTrader installation.
 Example command:
 
 ```powershell
-& 'C:\Program Files\MetaTrader 5\MetaEditor64.exe' /compile:'C:\Users\<user>\AppData\Roaming\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\codex\FVG.mq5' /log:'C:\Users\<user>\AppData\Roaming\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Logs\codex-fvg-compile.log'
+& 'C:\Program Files\MetaTrader 5\MetaEditor64.exe' /compile:'C:\Users\<user>\AppData\Roaming\MetaQuotes\Terminal\<terminal-id>\MQL5\Experts\codex\FVG.mq5' /log:'C:\Users\<user>\AppData\Roaming\MetaQuotes\Terminal\<terminal-id>\MQL5\Logs\codex-fvg-compile.log'
 ```
 
 Adjust the compiled file and log path to the target being worked on.
@@ -25,7 +25,7 @@ Always read the log after compiling.
 
 For the current EA example, the log is:
 
-`C:\Users\<user>\AppData\Roaming\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Logs\codex-fvg-compile.log`
+`C:\Users\<user>\AppData\Roaming\MetaQuotes\Terminal\<terminal-id>\MQL5\Logs\codex-fvg-compile.log`
 
 Do not assume compilation succeeded just because the command returned exit code `0`.
 Check the log and report:
