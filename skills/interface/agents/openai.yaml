@@ -1,0 +1,4 @@
+interface:
+  display_name: "Interface"
+  short_description: "Use the local MT5 trading CLI"
+  default_prompt: "Use $interface to explain or run the local MetaTrader 5 Python trading CLI safely."
