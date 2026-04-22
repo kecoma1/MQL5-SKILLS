@@ -1,36 +1,86 @@
 ---
 name: compile-mql5
-description: Use when compiling MQL5 experts, indicators, scripts, or include-dependent code in this workspace from the terminal. Follow the local MetaEditor command pattern and always inspect the compilation log after running it.
+description: Compile MQL5 code in a Linux environment using Wine and a portable MetaTrader 5 installation. Always analyze the compilation log.
 ---
 
-# Compile MQL5
+# Compile MQL5 (Linux + Wine + Portable MT5)
 
-Use this skill when compiling `.mq5` files in this repository.
+## Environment
 
-## Command
+- MetaTrader 5 is installed in portable mode
+- Base path:
 
-Use `MetaEditor64.exe` from the local MetaTrader installation.
+C:\Program Files\MetaTrader 5\
 
-Example command:
+- Do NOT use AppData or terminal-id paths
+- All paths must be Windows-style
 
-```powershell
-& 'C:\Program Files\MetaTrader 5\MetaEditor64.exe' /compile:'C:\Users\<user>\AppData\Roaming\MetaQuotes\Terminal\<terminal-id>\MQL5\Experts\codex\FVG.mq5' /log:'C:\Users\<user>\AppData\Roaming\MetaQuotes\Terminal\<terminal-id>\MQL5\Logs\codex-fvg-compile.log'
-```
+---
 
-Adjust the compiled file and log path to the target being worked on.
+## Compilation Command
 
-## Log Review
+Use the local wrapper script:
 
-Always read the log after compiling.
+```bash
+mql5_compile.sh "<FILE_WIN>" "<LOG_WIN>"
+````
 
-For the current EA example, the log is:
+---
 
-`C:\Users\<user>\AppData\Roaming\MetaQuotes\Terminal\<terminal-id>\MQL5\Logs\codex-fvg-compile.log`
+## File Locations
 
-Do not assume compilation succeeded just because the command returned exit code `0`.
-Check the log and report:
+All files must be created inside:
 
-1. Number of errors.
-2. Number of warnings.
-3. Important file paths mentioned by the compiler.
-4. Whether the expected `.ex5` file was produced or updated.
+C:\Program Files\MetaTrader 5\MQL5\
+
+Common subfolders:
+
+* Experts\
+* Indicators\
+* Scripts\
+* Include\
+* logs\
+
+---
+
+## Workflow
+
+1. Create or modify `.mq5` or `.mqh` files
+2. Place them in the correct MQL5 directory
+3. Compile using the wrapper script
+4. Read the compilation log from:
+
+$WINEPREFIX/drive_c/Program Files/MetaTrader 5/MQL5/Logs/
+
+5. Extract:
+
+   * Number of errors
+   * Number of warnings
+   * Error messages
+   * File references
+
+6. Fix issues and recompile
+
+Repeat until:
+
+0 errors, 0 warnings
+
+---
+
+## Important Rules
+
+* Do NOT call MetaEditor directly
+* Do NOT use wine commands manually
+* Always use mql5_compile.sh
+* Always verify compilation via log, not exit code
+
+---
+
+## Output Validation
+
+After compilation:
+
+* Confirm `.ex5` file exists
+* Confirm log reports success
+
+---
