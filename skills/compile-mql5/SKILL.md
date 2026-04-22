@@ -24,7 +24,12 @@ Use the local wrapper script:
 ```bash
 mql5_compile.sh "<FILE_WIN>" "<LOG_WIN>"
 ````
-
+Example:
+```bash
+./mql5_compile.sh \
+"C:\Program Files\MetaTrader 5\MQL5\Indicators\example.mq5" \
+"C:\Program Files\MetaTrader 5\MQL5\logs\example.log"
+````
 ---
 
 ## File Locations
@@ -50,7 +55,7 @@ Common subfolders:
 3. Compile using the wrapper script
 4. Read the compilation log from:
 
-$WINEPREFIX/drive_c/Program Files/MetaTrader 5/MQL5/Logs/
+$WINEPREFIX/drive_c/Program Files/MetaTrader 5/MQL5/logs/
 
 5. Extract:
 
