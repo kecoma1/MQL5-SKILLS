@@ -11,4 +11,4 @@ cat > "$BAT_LINUX" <<EOF
 "C:\Program Files\MetaTrader 5\MetaEditor64.exe" /compile:"$FILE_WIN" /log:"$LOG_WIN"
 EOF
 
-wine cmd /c C:\\compile_mql5.bat
+wine cmd /c C:\\compile_mql5.bat > /dev/null 2>&1
