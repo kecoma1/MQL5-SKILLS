@@ -1,70 +1,59 @@
 ---
 name: paint-objects
-description: Use when drawing or updating chart objects in MQL5 for this workspace. Follow the local rules for choosing the right object type, anchoring it to the correct candle, updating existing objects safely, and forcing chart redraw when needed.
+description: Use when drawing, updating, or managing the lifecycle of graphical chart objects in MQL5. Follow local rules for separation of concerns (keep calculation logic separate from rendering), optimal object updating, property management, and forcing visual redraws.
 ---
 
-# Paint Objects
+# Paint Objects (MQL5 Rendering)
 
-Use this skill when creating or editing MQL5 code that paints chart objects with `ObjectCreate`, `ObjectMove`, or `ObjectSetInteger`.
+Use this skill when generating or modifying MQL5 code that involves `ObjectCreate`, `ObjectMove`, `ObjectSetInteger`, `ObjectDelete`, or any other visual chart manipulation. 
 
-## Object Choice
+## 1. Separation of Concerns
+Never mix complex pattern detection logic (e.g., finding gaps, calculating indicators) with rendering logic.
+- Detection functions should return structures with data (prices, times, validity).
+- Rendering functions should take those structures and purely handle the MQL5 Object API.
 
-Choose the object type that matches the visual requirement.
+## 2. Object Choice
+Choose the MQL5 object type (`ENUM_OBJECT`) that strictly matches the visual requirement.
+- **Zones/Areas:** Use `OBJ_RECTANGLE`. Do not simulate areas using multiple trend lines.
+- **Levels/Targets:** Use `OBJ_HLINE` (infinite) or `OBJ_TREND` with `OBJPROP_RAY_RIGHT = false` (finite segment).
+- **Markers/Icons:** Use `OBJ_ARROW` with appropriate Wingdings codes.
 
-- Use `OBJ_RECTANGLE` for zones, gaps, ranges, and areas with top and bottom.
-- Do not simulate a zone with two trend lines when the intent is a filled area.
-- Use lines only when the user explicitly wants a line-based drawing.
+## 3. Creation and Updating (The MQL5 Way)
+MQL5 handles object updates efficiently. If `ObjectCreate` is called with the name of an object that *already exists*, it automatically updates its anchor points (coordinates). 
 
-## Anchoring
+Use the `ObjectFind` pattern only when you need to set cosmetic properties (colors, fills, widths) strictly upon initial creation, saving processing time on subsequent updates:
 
-Anchor the object to the correct candle and prices.
+```mql5
+// 1. Define unique, deterministic names
+string obj_name = "Zone_" + IntegerToString(zone_id);
 
-- If the drawing is based on a multi-candle pattern, confirm which candle defines the start time.
-- For the FVG case in this workspace, the rectangle must start at candle 1, the oldest candle in the 3-candle pattern.
-- For zones, use the upper price as the top and the lower price as the bottom.
-
-Example pattern for FVG:
-
-```mq5
-datetime start_time = StructToTime(time);
-datetime end_time = start_time + (duration_minutes * 60);
-
-ObjectCreate(chart_id, rect_name, OBJ_RECTANGLE, 0, start_time, high, end_time, low);
-```
-
-## Repainting And Updates
-
-Do not assume `ObjectCreate` will succeed repeatedly with the same name.
-
-- If the object does not exist, create it.
-- If the object already exists, update it with `ObjectMove`.
-- Keep object names stable and deterministic.
-
-Pattern:
-
-```mq5
-if(ObjectFind(chart_id, object_name) < 0)
-{
-   ObjectCreate(chart_id, object_name, OBJ_RECTANGLE, 0, start_time, high, end_time, low);
-}
-else
-{
-   ObjectMove(chart_id, object_name, 0, start_time, high);
-   ObjectMove(chart_id, object_name, 1, end_time, low);
+// 2. Check existence to apply initial formatting
+if(ObjectFind(chart_id, obj_name) < 0) {
+    // Object does not exist, create it and set static properties
+    if(ObjectCreate(chart_id, obj_name, OBJ_RECTANGLE, sub_window, time1, price1, time2, price2)) {
+        ObjectSetInteger(chart_id, obj_name, OBJPROP_COLOR, clrBlue);
+        ObjectSetInteger(chart_id, obj_name, OBJPROP_FILL, true);
+        ObjectSetInteger(chart_id, obj_name, OBJPROP_BACK, true);
+    }
+} else {
+    // Object exists, just update its coordinates
+    ObjectMove(chart_id, obj_name, 0, time1, price1);
+    ObjectMove(chart_id, obj_name, 1, time2, price2);
+    // Alternatively, ObjectCreate(...) with the same name achieves the same coordinate update.
 }
 ```
 
-## Visibility
+## 4. Time Coordinates (datetime)
+Object anchor points require `datetime`. If your logic uses bar indexes (shift), convert the index to time before rendering:
+`datetime time_val = iTime(_Symbol, _Period, bar_index);`
 
-After painting or updating objects, force a chart refresh when needed.
+## 5. Visibility and Redrawing
+Commands to create or modify objects are asynchronous and placed in a chart queue. 
+- **Always call `ChartRedraw(chart_id)`** at the end of your rendering block to force the visual update.
+- By default, programmatically created objects are hidden in the object list. If the user needs to interact with them, set `OBJPROP_HIDDEN` to `false` and `OBJPROP_SELECTABLE` to `true`.
 
-- Call `ChartRedraw(chart_id)` after a batch of object updates.
-- Do not assume the chart will visibly refresh immediately on its own.
+## 6. Cleanup
+Provide mechanisms to clean up painted objects when the MQL5 program is removed (`OnDeinit`). Use `ObjectsDeleteAll` with a specific prefix to avoid deleting user-drawn objects.
 
-## Validation
 
-When painted objects do not appear, check these points before changing strategy logic:
-
-1. The object name is not colliding with an existing object unexpectedly.
-2. Existing objects are updated with `ObjectMove` instead of recreated blindly.
-3. `ChartRedraw(...)` is called after painting.
+---
