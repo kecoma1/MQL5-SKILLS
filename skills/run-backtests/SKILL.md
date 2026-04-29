@@ -1,255 +1,166 @@
 ---
 name: run-backtests
-description: Use when running MetaTrader 5 Strategy Tester backtests from the terminal in this workspace. Ask the user for the test configuration field by field before launching the test, using the current project defaults unless the user changes them.
+description: Run MetaTrader 5 Strategy Tester backtests in Linux using Wine and a portable MT5 installation. Generate tester INI files, execute terminal64.exe through a local wrapper, inspect logs, and validate reports.
 ---
 
-# Run Backtests
+# Run Backtests — Linux + Wine + Portable MT5
 
-Use this skill when the user wants to run a MetaTrader 5 backtest from the terminal.
+## Environment
+
+MetaTrader 5 is installed in portable mode.
+
+Base Windows path:
+
+C:\Program Files\MetaTrader 5\
+
+Linux equivalent:
+
+$WINEPREFIX/drive_c/Program Files/MetaTrader 5/
+
+Do NOT use:
+
+C:\Users\<user>\AppData\Roaming\MetaQuotes\Terminal\<terminal-id>\
+
+All paths passed to MetaTrader must be Windows-style paths.
+
+---
 
 ## Command
 
-Run the main MetaTrader 5 installation with a tester `.ini` file:
+Do NOT call `terminal64.exe` directly.
 
-```powershell
-Start-Process -FilePath 'C:\Program Files\MetaTrader 5\terminal64.exe' -ArgumentList '/config:C:\Users\<user>\AppData\Roaming\MetaQuotes\Terminal\<terminal-id>\config\codex-fvgtrader-gbpusd-lastmonth-v2.ini' -Wait
+Do NOT use PowerShell.
+
+Do NOT use `Start-Process`.
+
+Use the local wrapper:
+
+```bash
+./mql5_backtest.sh "<INI_WIN>"
+````
+
+Example:
+
+```bash
+./mql5_backtest.sh "C:\Program Files\MetaTrader 5\MQL5\Profiles\Tester\backtest.ini"
 ```
 
-Use that command pattern for backtests in this workspace.
+---
 
-## Required Workflow
+## Required Files
 
-Before running the test, ask the user for the configuration field by field.
-Do not assume the final setup without confirming each field first.
-When asking for a field, use JSON Schema style notation like this:
+The agent must generate:
 
-```json
-{
-  "type": "object",
-  "properties": {
-    "risk_level": {
-      "type": "string",
-      "description": "Select your preferred risk level",
-      "enum": ["low", "medium", "high"]
-    }
-  },
-  "required": ["risk_level"]
-}
+1. Tester `.ini`
+2. Report path
+3. Optional run-specific log/report naming
+
+Recommended INI location:
+
+C:\Program Files\MetaTrader 5\MQL5\Profiles\Tester\backtest.ini
+
+Recommended report location:
+
+C:\Program Files\MetaTrader 5\MQL5\Files\Reports\backtest_report.html
+
+Linux report equivalent:
+
+$WINEPREFIX/drive_c/Program Files/MetaTrader 5/MQL5/Files/Reports/backtest_report.html
+
+---
+
+## Workflow
+
+1. Confirm or infer test parameters from the user request.
+2. Generate the tester `.ini`.
+3. Run:
+
+```bash
+./mql5_backtest.sh "<INI_WIN>"
 ```
 
-Use the same notation for backtest questions. Add `enum` options whenever the field has a bounded set of valid choices.
+4. Inspect Strategy Tester logs.
+5. Confirm the test started.
+6. Confirm the test finished.
+7. Confirm the report file exists.
+8. Read and summarize actual report metrics.
 
-Ask in this order:
+Do not invent results.
 
-1. Expert or strategy file.
-2. Symbol.
-3. Timeframe.
-4. Date range.
-5. Deposit.
-6. Deposit currency.
-7. Leverage.
-8. Tick model.
-9. Optimization on or off.
-10. Visualization on or off.
-
-Use these question shapes:
-
-1. Expert or strategy file:
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "expert": {
-      "type": "string",
-      "description": "Select the Expert Advisor or strategy file to run",
-      "enum": ["Experts\\\\codex\\\\FVGTrader.ex5"]
-    }
-  },
-  "required": ["expert"]
-}
-```
-
-2. Symbol:
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "symbol": {
-      "type": "string",
-      "description": "Select the symbol to backtest",
-      "enum": ["GBPUSD"]
-    }
-  },
-  "required": ["symbol"]
-}
-```
-
-3. Timeframe:
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "timeframe": {
-      "type": "string",
-      "description": "Select the chart timeframe",
-      "enum": ["M1", "M5", "M15", "M30", "H1", "H4", "D1"]
-    }
-  },
-  "required": ["timeframe"]
-}
-```
-
-4. Date range:
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "date_range": {
-      "type": "string",
-      "description": "Select the date range preset or provide a custom range",
-      "enum": ["last_week", "last_month", "last_3_months", "custom"]
-    }
-  },
-  "required": ["date_range"]
-}
-```
-
-5. Deposit:
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "deposit": {
-      "type": "number",
-      "description": "Enter the starting deposit amount"
-    }
-  },
-  "required": ["deposit"]
-}
-```
-
-6. Deposit currency:
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "currency": {
-      "type": "string",
-      "description": "Select the deposit currency",
-      "enum": ["USD", "EUR", "GBP"]
-    }
-  },
-  "required": ["currency"]
-}
-```
-
-7. Leverage:
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "leverage": {
-      "type": "string",
-      "description": "Select the leverage",
-      "enum": ["1:30", "1:50", "1:100", "1:200", "1:500"]
-    }
-  },
-  "required": ["leverage"]
-}
-```
-
-8. Tick model:
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "tick_model": {
-      "type": "string",
-      "description": "Select the tick generation model",
-      "enum": ["open_prices", "control_points", "every_tick", "real_ticks"]
-    }
-  },
-  "required": ["tick_model"]
-}
-```
-
-9. Optimization on or off:
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "optimization": {
-      "type": "string",
-      "description": "Select whether optimization is enabled",
-      "enum": ["off", "on"]
-    }
-  },
-  "required": ["optimization"]
-}
-```
-
-10. Visualization on or off:
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "visualization": {
-      "type": "string",
-      "description": "Select whether visualization is enabled",
-      "enum": ["off", "on"]
-    }
-  },
-  "required": ["visualization"]
-}
-```
+---
 
 ## Defaults
 
-Use these values as defaults unless the user changes them:
+Use these defaults unless the user changes them:
 
-1. Expert: `Experts\codex\FVGTrader.ex5`
-2. Symbol: `GBPUSD`
-3. Timeframe: `M15`
-4. Date range: last month
-5. Deposit: `100000`
-6. Currency: `USD`
-7. Leverage: `1:100`
-8. Tick model: real ticks
-9. Optimization: off
-10. Visualization: off
+* Expert: Experts\codex\FVGTrader.ex5
+* Symbol: GBPUSD
+* Timeframe: M15
+* Date range: last month
+* Deposit: 100000
+* Currency: USD
+* Leverage: 1:100
+* Tick model: real_ticks
+* Optimization: off
+* Visualization: off
 
-## Tester INI
+---
 
-Create or update a tester `.ini` with the confirmed values.
+## Tick Model Mapping
 
-Use this structure:
+Use:
+
+* open_prices → Model=1
+* control_points → Model=2
+* every_tick → Model=0
+* real_ticks → Model=4
+
+Default:
+
+Model=4
+
+---
+
+## Optimization Mapping
+
+* off → Optimization=0
+* on → Optimization=1
+
+Default:
+
+Optimization=0
+
+---
+
+## Visualization Mapping
+
+* off → Visual=0
+* on → Visual=1
+
+Default:
+
+Visual=0
+
+---
+
+## Tester INI Template
 
 ```ini
 [Tester]
-Expert=<ask_user_expert>
+Expert=Experts\codex\FVGTrader.ex5
 Symbol=GBPUSD
 Period=M15
 Model=4
 Optimization=0
-FromDate=2026.02.28
-ToDate=2026.03.28
+FromDate=2026.03.28
+ToDate=2026.04.28
 ForwardMode=0
 Deposit=100000
 Currency=USD
 Leverage=1:100
 ExecutionMode=0
 Visual=0
-Report=<ask_user_report>
+Report=C:\Program Files\MetaTrader 5\MQL5\Files\Reports\backtest_report.html
 ReplaceReport=1
 ShutdownTerminal=1
 UseLocal=1
@@ -257,15 +168,34 @@ UseRemote=0
 UseCloud=0
 ```
 
+---
+
 ## Validation
 
-After launching the test:
+After running the wrapper:
 
-1. Read the tester logs.
-2. Confirm the backtest really started.
-3. Confirm it finished.
-4. Read the generated report or result files.
-5. Summarize the actual metrics for the user.
+1. Check that the report exists.
+2. Check tester logs.
+3. Confirm terminal shutdown occurred.
+4. Extract actual metrics from the generated report.
+5. Report:
 
-If the terminal opens but the test does not run, do not invent results.
-State clearly that the launch failed and inspect the tester log before trying again.
+   * Net profit
+   * Balance drawdown
+   * Equity drawdown
+   * Total trades
+   * Profit factor
+   * Expected payoff
+   * Recovery factor, if present
+
+If the report does not exist, inspect logs and state that the backtest failed.
+
+---
+
+## Rules
+
+* Never use PowerShell syntax.
+* Never use AppData terminal-id paths.
+* Never expose Wine quoting to the agent.
+* Always use wrapper scripts.
+* Always validate using logs and report files.
