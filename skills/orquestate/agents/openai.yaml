@@ -1,0 +1,4 @@
+interface:
+  display_name: "Orquestate"
+  short_description: "Orquesta cuentas MT5 con bots y Telegram"
+  default_prompt: "Use $orquestate para orquestar la cuenta MT5 actual."
