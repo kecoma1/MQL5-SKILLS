@@ -105,9 +105,9 @@ Genera un `.srt` (con puntuacion, para subir a la plataforma o usar en Resolve) 
 
 Es el estilo que el usuario eligio a partir de un video de muestra. No cambiarlo por otro sin que lo pida.
 
-- Caja clara `#ebe9ea` de esquinas apenas redondeadas, ajustada al texto, centrada al 78,3 % de la altura.
+- Caja clara `#ebe9ea` de esquinas bien redondeadas (radio del 30 % del alto, `--roundness`), ajustada al texto, centrada al 78,3 % de la altura.
 - Texto en Poppins Bold `#252324`, sin borde ni sombra. Minusculas tal cual, sin puntos ni comas finales.
-- Las palabras del grupo que aun no se han dicho salen en gris `#bfbdbe` y se oscurecen cuando se pronuncian.
+- Las palabras del grupo que aun no se han dicho salen en gris `#bfbdbe` y se oscurecen cuando se pronuncian con un fundido progresivo de 220 ms (`--word-fade`), nunca de golpe en un fotograma.
 - Grupos de hasta 3 palabras o 18 caracteres, partidos en comas y finales de frase.
 - Las palabras clave van solas y en grande (cuerpo 103 frente a 56, en px a 1080 de ancho). Una palabra corta suelta justo delante se une a ellas ("una locura").
 - Cada caja entra con un fundido de 90 ms y una ligera ampliacion; sale por corte seco cuando entra la siguiente.

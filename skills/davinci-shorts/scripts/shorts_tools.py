@@ -315,9 +315,11 @@ def display(token):
 
 
 def rounded_box(w, h, r):
-    w, h, r = round(w), round(h), round(r)
-    return (f"m {r} 0 l {w - r} 0 b {w} 0 {w} 0 {w} {r} l {w} {h - r} b {w} {h} {w} {h} {w - r} {h} "
-            f"l {r} {h} b 0 {h} 0 {h} 0 {h - r} l 0 {r} b 0 0 0 0 {r} 0")
+    w, h = round(w), round(h)
+    r = min(round(r), h // 2, w // 2)
+    c = round(r * 0.448)  # puntos de control para que la esquina sea un arco de circulo
+    return (f"m {r} 0 l {w - r} 0 b {w - c} 0 {w} {c} {w} {r} l {w} {h - r} b {w} {h - c} {w - c} {h} {w - r} {h} "
+            f"l {r} {h} b {c} {h} 0 {h - c} 0 {h - r} l 0 {r} b 0 {c} {c} 0 {r} 0")
 
 
 def cmd_subs(args):
@@ -378,7 +380,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 
         events.append(
             f"Dialogue: 0,{ts_ass(start)},{ts_ass(end)},Caption,,0,0,0,,"
-            f"{{\\an5\\pos({cx:.0f},{cy:.0f})\\1c{box}\\bord0\\shad0{pop}\\p1}}{rounded_box(box_w, box_h, args.radius * scale)}{{\\p0}}"
+            f"{{\\an5\\pos({cx:.0f},{cy:.0f})\\1c{box}\\bord0\\shad0{pop}\\p1}}{rounded_box(box_w, box_h, box_h * args.roundness)}{{\\p0}}"
         )
         parts = []
         for k, (w, token) in enumerate(zip(gw, tokens)):
@@ -386,7 +388,9 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
                 parts.append(f"{{\\1c{dark}}}{token}")
             else:
                 at = round((w["start"] - start) * 1000)
-                parts.append(f"{{\\1c{pending}\\t({at},{at + 60},\\1c{dark})}}{token}")
+                # el fundido se acorta si la caja se va antes, para que la palabra llegue a oscurecerse
+                fade = min(args.word_fade, max(60, round((end - w["start"]) * 1000)))
+                parts.append(f"{{\\1c{pending}\\t({at},{at + fade},\\1c{dark})}}{token}")
         events.append(
             f"Dialogue: 1,{ts_ass(start)},{ts_ass(end)},Caption,,0,0,0,,"
             f"{{\\an5\\pos({cx:.0f},{text_y:.0f})\\fs{font.ass_size(em):.1f}{pop}}}{' '.join(parts)}"
@@ -499,7 +503,8 @@ def main():
     p.add_argument("--font-file", default=str(DEFAULT_FONT))
     p.add_argument("--size", type=float, default=56, help="cuerpo del texto normal, en px a 1080 de ancho")
     p.add_argument("--big-size", type=float, default=103, help="cuerpo de las palabras destacadas")
-    p.add_argument("--radius", type=float, default=10)
+    p.add_argument("--roundness", type=float, default=0.3, help="radio de las esquinas como fraccion del alto de la caja (0.5 = pastilla)")
+    p.add_argument("--word-fade", type=int, default=220, help="ms que tarda cada palabra en pasar de gris a oscuro")
     p.add_argument("--fade", type=int, default=90, help="ms de la entrada de cada caja")
     p.set_defaults(func=cmd_subs)
 
