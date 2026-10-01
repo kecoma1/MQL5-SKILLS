@@ -7,7 +7,18 @@ description: Lanzar, preparar y manejar DaVinci Resolve desde el MCP para edicio
 
 Edicion basica con DaVinci Resolve controlado por el MCP `davinci-resolve`: conectar, preparar el proyecto, cortar, renderizar y revisar.
 
-Lo que la API de Resolve no da lo cubre `scripts/edit_tools.py` (Python 3 y ffmpeg/ffprobe en el PATH):
+## Archivos De La Skill
+
+Todo lo necesario esta dentro de esta carpeta; las rutas son relativas a ella.
+
+| Archivo | Para que |
+|---|---|
+| [scripts/edit_tools.py](scripts/edit_tools.py) | Lo que la API de Resolve no da: propiedades del video, silencios, fotogramas, copia ligera y revision |
+| [agents/openai.yaml](agents/openai.yaml) | Ficha de la skill para Codex |
+
+Los subtitulos estan en la skill hermana `captions-davinci` (`..\captions-davinci\SKILL.md`).
+
+[scripts/edit_tools.py](scripts/edit_tools.py) necesita Python 3 y ffmpeg/ffprobe en el PATH:
 
 ```powershell
 python scripts\edit_tools.py probe   --video "<video>"

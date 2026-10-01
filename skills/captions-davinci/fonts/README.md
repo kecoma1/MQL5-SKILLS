@@ -1,5 +1,6 @@
 # Fuente
 
-Aqui va `Poppins-Bold.ttf` (Google Fonts, licencia SIL Open Font License 1.1).
+- `Poppins-Bold.ttf`: Poppins Bold 4.004, la fuente de los subtitulos. `style.json` la referencia en `font_file`.
+- `OFL.txt`: su licencia (SIL Open Font License 1.1, Copyright 2020 The Poppins Project Authors). Tiene que acompañar siempre a la fuente.
 
-No se versiona en el repositorio de skills. Sin ella `captions.py` no genera nada: copiarla a esta carpeta desde el equipo o descargarla de https://fonts.google.com/specimen/Poppins.
+No sustituir el `.ttf` por otra version: `captions.py` mide el ancho de cada caja con las metricas de este archivo.

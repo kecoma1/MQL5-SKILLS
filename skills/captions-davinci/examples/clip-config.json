@@ -1,0 +1,30 @@
+{
+  "replacements": [
+    { "from": "cloud", "to": "Claude" },
+    { "from": "cloth", "to": "Claude" },
+    { "from": "codex", "to": "Codex" },
+    { "from": "codecs", "to": "Codex" },
+    { "from": "opus", "to": "Opus" },
+    { "from": "team", "to": "Team" },
+    { "from": "GPT seis", "to": "GPT-6" },
+    { "from": "GPS desastre", "to": "GPT-6 Astra" },
+    { "from": "chat GPT", "to": "ChatGPT" },
+    { "from": "Antrópico", "to": "Anthropic" },
+    { "from": "son 5.5", "to": "Sonnet 5.5" },
+    { "from": "uno por cinco", "to": "un x5" },
+    { "from": "por cinco", "to": "x5" },
+    { "from": "por uno", "to": "x1" },
+    { "from": "por 20", "to": "x20" },
+    { "from": "20 casi más uso", "to": "20, casi más uso" }
+  ],
+  "emphasis": [
+    "Codex",
+    "infumable",
+    "locura",
+    "GPT-6",
+    "Opus 5.5",
+    "90 £",
+    "x5",
+    "x1"
+  ]
+}

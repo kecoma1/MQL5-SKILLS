@@ -15,7 +15,11 @@ MQL5-SKILLS/
     |   |-- style.json
     |   |-- agents/
     |   |   `-- openai.yaml
+    |   |-- examples/
+    |   |   `-- clip-config.json
     |   |-- fonts/
+    |   |   |-- OFL.txt
+    |   |   |-- Poppins-Bold.ttf
     |   |   `-- README.md
     |   `-- scripts/
     |       `-- captions.py

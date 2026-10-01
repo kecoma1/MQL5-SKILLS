@@ -9,6 +9,20 @@ Subtitulos quemados para shorts. El aspecto entero vive en `style.json`: con ese
 
 Necesita Python 3 y ffmpeg en el PATH. El video de entrada es el master que sale de Resolve (skill `edit-davinci`).
 
+## Archivos De La Skill
+
+Todo lo necesario esta dentro de esta carpeta; las rutas son relativas a ella.
+
+| Archivo | Para que |
+|---|---|
+| [scripts/captions.py](scripts/captions.py) | Genera el `.srt` y el `.ass` (`build`) y los quema en el video (`burn`) |
+| [style.json](style.json) | La configuracion exacta del estilo. El script no lleva ningun valor de estilo dentro |
+| [fonts/Poppins-Bold.ttf](fonts/Poppins-Bold.ttf) | La fuente. La leen el script, para medir cada caja, y ffmpeg, para dibujar el texto |
+| [fonts/OFL.txt](fonts/OFL.txt) | Licencia de la fuente; va siempre con ella |
+| [fonts/README.md](fonts/README.md) | Version de la fuente y por que no hay que cambiarla |
+| [examples/clip-config.json](examples/clip-config.json) | Ejemplo real de config de un video: correcciones y palabras en grande |
+| [agents/openai.yaml](agents/openai.yaml) | Ficha de la skill para Codex |
+
 ## Flujo
 
 1. Generar los subtitulos del tramo:
@@ -50,7 +64,7 @@ python ..\edit-davinci\scripts\edit_tools.py review --video "<..._subs.mp4>" --o
 
 ## Config Del Video
 
-Un JSON por video, junto a el (`<n>\subtitulos-correcciones.json`). No es estilo: es lo propio de ese contenido.
+Un JSON por video, junto a el (`<n>\subtitulos-correcciones.json`). No es estilo: es lo propio de ese contenido. Para un video nuevo, partir de [examples/clip-config.json](examples/clip-config.json): sus correcciones de nombres (Claude, Codex, GPT-6...) valen para cualquier video del canal; la lista `emphasis` hay que rehacerla para cada clip.
 
 ```json
 {
@@ -112,7 +126,7 @@ Para probar una variante sin tocar el estilo guardado, copiar `style.json`, edit
 
 ## La Fuente
 
-`fonts/Poppins-Bold.ttf` va dentro de la skill; el script la lee para medir cada caja y ffmpeg para dibujar el texto. Si falta, el script lo dice y no genera nada. Buscar `Poppins-Bold.ttf` en el equipo y copiarla ahi, o pedir permiso al usuario para descargarla (Google Fonts, licencia OFL). Con otra fuente las cajas cambian de tamano y deja de ser el mismo estilo.
+[fonts/Poppins-Bold.ttf](fonts/Poppins-Bold.ttf) (Poppins Bold 4.004) va dentro de la skill junto a su licencia [fonts/OFL.txt](fonts/OFL.txt); no hace falta instalarla en el sistema. El script la lee para medir cada caja y ffmpeg la carga desde esa carpeta para dibujar el texto. Si falta, el script lo dice y no genera nada. Con otra fuente u otra version las cajas cambian de tamano y deja de ser el mismo estilo.
 
 ## Copiar Un Estilo De Un Video De Muestra
 
