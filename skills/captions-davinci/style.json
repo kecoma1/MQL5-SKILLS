@@ -1,0 +1,46 @@
+{
+  "reference_width": 1080,
+  "font_file": "fonts/Poppins-Bold.ttf",
+  "position_y": 0.783,
+  "colors": {
+    "box": "#ebe9ea",
+    "text": "#252324",
+    "pending": "#bfbdbe"
+  },
+  "text": {
+    "size": 56,
+    "emphasis_size": 103,
+    "strip_trailing": ".,;:"
+  },
+  "box": {
+    "height_em": 1.65,
+    "padding_x": 30,
+    "padding_x_em": 0.06,
+    "roundness": 0.3,
+    "baseline": 0.675,
+    "max_width": 0.9
+  },
+  "animation": {
+    "box_fade_ms": 90,
+    "box_scale_from": 94,
+    "word_fade_ms": 220,
+    "word_fade_min_ms": 60,
+    "hold_s": 0.6
+  },
+  "grouping": {
+    "max_chars": 18,
+    "max_words": 3,
+    "max_gap_s": 0.5,
+    "tail_extra_chars": 6,
+    "merge_short_word_chars": 4,
+    "emphasis_max_words": 3,
+    "min_word_inside": 0.6
+  },
+  "burn": {
+    "preset": "slow",
+    "crf": 18,
+    "maxrate": "14M",
+    "bufsize": "28M",
+    "audio_bitrate": "192k"
+  }
+}

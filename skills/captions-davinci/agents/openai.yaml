@@ -1,0 +1,4 @@
+interface:
+  display_name: "Captions DaVinci"
+  short_description: "Subtitulos animados con el estilo guardado"
+  default_prompt: "Use $captions-davinci para generar y quemar los subtitulos del short."

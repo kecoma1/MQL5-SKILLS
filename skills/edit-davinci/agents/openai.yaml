@@ -1,0 +1,4 @@
+interface:
+  display_name: "Edit DaVinci"
+  short_description: "Conectar, cortar y renderizar con DaVinci Resolve"
+  default_prompt: "Use $edit-davinci para preparar DaVinci Resolve y recortar el video."

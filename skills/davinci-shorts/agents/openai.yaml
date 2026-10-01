@@ -1,4 +1,0 @@
-interface:
-  display_name: "DaVinci Shorts"
-  short_description: "Shorts verticales con DaVinci Resolve y subtitulos"
-  default_prompt: "Use $davinci-shorts para sacar un short vertical del video."
