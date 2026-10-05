@@ -1,0 +1,13 @@
+{
+  "name": "podcast-pip",
+  "description": "Horizontal 16:9. Persona en recuadro vertical a la izquierda, pantalla grande a la derecha, fondo propio y esquinas redondeadas.",
+  "canvas": [1920, 1080],
+  "radius": 24,
+  "person": { "x": 20, "width": 300 },
+  "screen": { "x": 340, "right_margin": 20, "vertical_margin": 20 },
+  "intro": { "frames": 40, "fade_frames": 25, "slide_from": "left" },
+  "overlays": [
+    { "name": "username", "at_seconds": 3 },
+    { "name": "subscribe", "at_seconds": 15 }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Podcast Edit"
+  short_description: "Montar videos largos tipo podcast con DaVinci Resolve"
+  default_prompt: "Use $podcast-edit para montar el podcast con la persona, la pantalla y los overlays."

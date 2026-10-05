@@ -37,6 +37,14 @@ MQL5-SKILLS/
     |   `-- SKILL.md
     |-- paint-objects/
     |   `-- SKILL.md
+    |-- podcast-edit/
+    |   |-- SKILL.md
+    |   |-- agents/
+    |   |   `-- openai.yaml
+    |   |-- layouts/
+    |   |   `-- podcast-pip.json
+    |   `-- scripts/
+    |       `-- podcast_tools.py
     `-- run-backtests/
         `-- SKILL.md
 ```
@@ -50,4 +58,5 @@ MQL5-SKILLS/
 - `expert-advisors`: Conventions for structuring MQL5 expert advisors, especially grouped inputs and practical parameter comments.
 - `git`: Git conventions for this repo, including branch naming, commit message format, and issue references.
 - `paint-objects`: Rules for creating and updating chart objects in MQL5, including anchoring, repaint-safe updates, and redraw behavior.
+- `podcast-edit`: Long horizontal podcast-style edits in DaVinci Resolve from a camera and a screen recording: rounded picture-in-picture boxes over a custom background, animated intro, and name/subscribe overlays with sound.
 - `run-backtests`: Guided workflow for configuring and launching MetaTrader 5 backtests with confirmed inputs and real result validation.
